@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 bot = commands.Bot(command_prefix='$', description='A bot that greets the user back.')
 
-Connection = SQL.connect(host="127.0.0.1", database = "pokemonDB", user="postgres", password="Database1234")
+Connection = SQL.connect(host="127.0.0.1", port = "5432", database = "pokemonDB", user="postgres", password="Database1234")
 Cursor = Connection.cursor()
 print("PostgreSQL Connection Successful")
 
