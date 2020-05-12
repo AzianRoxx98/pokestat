@@ -3,6 +3,7 @@ import psycopg2 as SQL
 import discord
 from discord.ext import commands
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 bot = commands.Bot(command_prefix='$', description='A bot that greets the user back.')
@@ -19,7 +20,7 @@ async def on_ready():
     print('------')
 
 @bot.command()
-async def pokestat(ctx, pokemon):
+async def pstat(ctx, pokemon):
     sql = "SELECT * FROM POKEMON WHERE NAME = '{}'".format(pokemon)
     Cursor.execute(sql)
     record = Cursor.fetchall()
@@ -37,6 +38,46 @@ async def pokestat(ctx, pokemon):
     plt.savefig('stat.png')
     plt.close()
     File = discord.File('stat.png', filename='stat.png')
+    await ctx.channel.send(file=File)
+
+@bot.command()
+async def pComp(ctx, pokemonOne, pokemonTwo):
+    columns = ['ID', 'Name', 'Type 1', 'Type 2', 'Total', 'HP', 'Attack', 'Defense', 'Sp.Atk', 'Sp.Def', 'Speed', 'Generation', 'Legendary']
+    header = columns[5:10]
+    pokeSQLOne = "SELECT * FROM POKEMON WHERE NAME = '{}';".format(pokemonOne)
+    Cursor.execute(pokeSQLOne)
+    datOne = Cursor.fetchone()
+    datOneList = datOne[5:10]
+    print(datOne)
+    pokeSQLTwo = "SELECT * FROM POKEMON WHERE NAME = '{}';".format(pokemonTwo)
+    Cursor.execute(pokeSQLTwo)
+    datTwo = Cursor.fetchone()
+    datTwoList = datTwo[5:10]
+    print(datTwo)
+    print(len(datOneList), len(datTwoList))
+    N = 5
+    width = 0.35
+    fig, ax = plt.subplots()
+    index = np.arange(N)
+    pokeOne = plt.bar(index, datOneList, width, label = pokemonOne)
+    pokeTwo = plt.bar(index + width, datTwoList, width, label = pokemonTwo)
+    plt.title(pokemonOne + " vs. " + pokemonTwo)
+    plt.xticks(index + width, header)
+    plt.legend()
+    def autolabel(rects):
+        """Attach a text label above each bar in *rects*, displaying its height."""
+        for rect in rects:
+            height = rect.get_height()
+            ax.annotate('{}'.format(height),
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 3),  # 3 points vertical offset
+                        textcoords="offset points",
+                        ha='center', va='bottom')
+    autolabel(pokeOne)
+    autolabel(pokeTwo)
+    plt.savefig('compare.png')
+    plt.close()
+    File = discord.File('compare.png', filename='compare.png')
     await ctx.channel.send(file=File)
 
 bot.run('NzA4ODgyNTc1ODM3NjI2Mzg5.XreVZw.5kjwiV29HywpqAJribIEzGoQ44g')
