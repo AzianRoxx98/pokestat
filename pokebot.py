@@ -82,4 +82,4 @@ async def pComp(ctx, pokemonOne, pokemonTwo):
     File = discord.File('compare.png', filename='compare.png')
     await ctx.channel.send(file=File)
 
-bot.run('TOKEN')
+bot.run(TOKEN)
