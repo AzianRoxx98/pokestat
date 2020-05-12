@@ -5,6 +5,8 @@ from discord.ext import commands
 import matplotlib.pyplot as plt
 import numpy as np
 
+TOKEN = ""
+
 
 bot = commands.Bot(command_prefix='$', description='A bot that greets the user back.')
 
@@ -80,4 +82,4 @@ async def pComp(ctx, pokemonOne, pokemonTwo):
     File = discord.File('compare.png', filename='compare.png')
     await ctx.channel.send(file=File)
 
-bot.run('NzA4ODgyNTc1ODM3NjI2Mzg5.XreVZw.5kjwiV29HywpqAJribIEzGoQ44g')
+bot.run('TOKEN')
