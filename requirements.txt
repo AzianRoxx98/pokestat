@@ -16,5 +16,5 @@ pyparsing==2.4.7
 python-dateutil==2.8.1
 setuptools==46.2.0
 six==1.14.0
-websockets==8.1
+websockets==9.1
 yarl==1.4.2
